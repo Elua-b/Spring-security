@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/role")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ApiResponse> updateUserRole(@RequestBody UpdateRoleDTO updateRoleDTO) throws Exception{
         return userService.updateUserRole(updateRoleDTO);
     }

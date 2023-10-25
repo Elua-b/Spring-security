@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface CarService {
 public ResponseEntity<ApiResponse>createCar(CreateCarDTO createCarDTO) throws  Exception;
+
 }

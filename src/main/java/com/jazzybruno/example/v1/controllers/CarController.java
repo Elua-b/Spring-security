@@ -29,5 +29,14 @@ public class CarController {
     public <carId> ResponseEntity<ApiResponse> updateCar(@PathVariable Long carId, @RequestBody CreateCarDTO updatedCarDTO) throws Exception{
         return  carService.updateCar(carId,updatedCarDTO);
    }
+   @GetMapping("/cars/{carId}")
+    public <CarId> ResponseEntity<ApiResponse> getCarById(@PathVariable Long carId) throws  Exception{
+        return  carService.getCarById(carId);
+   }
+    @DeleteMapping("/cars/{carId}")
+    public <CarId> ResponseEntity<ApiResponse> deleteCar(@PathVariable Long carId) throws  Exception {
+        return carService.deleteCar(carId);
+    }
+
 }
 

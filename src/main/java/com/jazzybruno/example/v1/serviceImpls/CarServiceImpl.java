@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
@@ -124,6 +125,58 @@ public class CarServiceImpl implements CarService {
                             "Failed to update the car"
                     ));
                 }
+            } else {
+                return ResponseEntity.status(404).body(new ApiResponse(
+                        false,
+                        "Car with ID " + carId + " not found"
+                ));
+            }
+        } else {
+            return ResponseEntity.status(401).body(new ApiResponse(
+                    false,
+                    "User not authenticated"
+            ));
+        }
+    }
+    public ResponseEntity<ApiResponse> getCarById(@PathVariable Long carId) {
+        if (UserUtils.isUserLoggedIn()) {
+
+            Optional<Car> optionalCar = carRepository.findById(carId);
+            if (optionalCar.isPresent()) {
+                Car car = optionalCar.get();
+                return ResponseEntity.ok().body(new ApiResponse(
+                        true,
+                        "Car information retrieved successfully",
+                        car
+                ));
+            } else {
+                return ResponseEntity.status(404).body(new ApiResponse(
+                        false,
+                        "Car with ID " + carId + " not found"
+                ));
+            }
+        } else {
+            return ResponseEntity.status(401).body(new ApiResponse(
+                    false,
+                    "User not authenticated"
+            ));
+        }
+    }
+    public ResponseEntity<ApiResponse> deleteCar(@PathVariable Long carId) {
+        if (UserUtils.isUserLoggedIn()) {
+            // Check if the car with the given carId exists in the database.
+            Optional<Car> optionalCar = carRepository.findById(carId);
+            if (optionalCar.isPresent()) {
+                Car car = optionalCar.get();
+
+                // Delete the car from the database.
+                carRepository.delete(car);
+
+                return ResponseEntity.ok().body(new ApiResponse(
+                        true,
+                        "Car deleted successfully",
+                        car
+                ));
             } else {
                 return ResponseEntity.status(404).body(new ApiResponse(
                         false,
